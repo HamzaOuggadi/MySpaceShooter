@@ -30,6 +30,8 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 
+        backgrounds = new Texture[4];
+
         backgrounds[0] = new Texture("Starscape00.png");
         backgrounds[1] = new Texture("Starscape01.png");
         backgrounds[2] = new Texture("Starscape02.png");
@@ -44,7 +46,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         batch.begin();
 
-
+        renderBackground(delta);
 
         batch.end();
     }
@@ -77,6 +79,25 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+
+    }
+
+    private void renderBackground(float deltaTime) {
+
+        backgroundOffsets[0] += deltaTime * backgroundMaxScrollingSpeed / 8;
+        backgroundOffsets[1] += deltaTime * backgroundMaxScrollingSpeed / 4;
+        backgroundOffsets[2] += deltaTime * backgroundMaxScrollingSpeed / 2;
+        backgroundOffsets[3] += deltaTime * backgroundMaxScrollingSpeed;
+
+        for (int layer = 0; layer < backgroundOffsets.length; layer++) {
+
+            if (backgroundOffsets[layer] > WORLD_HEIGHT) {
+                backgroundOffsets[layer] = 0;
+            }
+            batch.draw(backgrounds[layer], 0, -backgroundOffsets[layer], WORLD_WIDTH, WORLD_HEIGHT);
+            batch.draw(backgrounds[layer], 0, -backgroundOffsets[layer] + WORLD_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT);
+
+        }
 
     }
 }

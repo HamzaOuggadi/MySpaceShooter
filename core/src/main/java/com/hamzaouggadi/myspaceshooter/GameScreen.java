@@ -16,10 +16,11 @@ public class GameScreen implements Screen {
 
     //Graphics
     private SpriteBatch batch;
-    private Texture background;
+    private Texture[] backgrounds;
 
     //timing
-    private int backgroundOffset;
+    private float[] backgroundOffsets = {0,0,0,0};
+    private float backgroundMaxScrollingSpeed;
 
     //World parameters
     private final int WORLD_WIDTH = 72;
@@ -28,8 +29,14 @@ public class GameScreen implements Screen {
     public GameScreen() {
         camera = new OrthographicCamera();
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-        background = new Texture("darkPurpleStarscape.png");
-        backgroundOffset = 0;
+
+        backgrounds[0] = new Texture("Starscape00.png");
+        backgrounds[1] = new Texture("Starscape01.png");
+        backgrounds[2] = new Texture("Starscape02.png");
+        backgrounds[3] = new Texture("Starscape03.png");
+
+        backgroundMaxScrollingSpeed = (float) (WORLD_HEIGHT / 4);
+
         batch = new SpriteBatch();
     }
 
@@ -37,14 +44,6 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         batch.begin();
 
-        backgroundOffset++;
-
-        if (backgroundOffset % WORLD_HEIGHT == 0) {
-            backgroundOffset = 0;
-        }
-
-        batch.draw(background,0,-backgroundOffset, WORLD_WIDTH, WORLD_HEIGHT);
-        batch.draw(background,0,-backgroundOffset+WORLD_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT);
 
 
         batch.end();
